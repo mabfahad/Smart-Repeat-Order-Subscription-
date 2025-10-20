@@ -28,15 +28,24 @@ class SRO_Repeat_Order
 
         $order_id = absint($_GET['sro_repeat_order']);
         $order = wc_get_order($order_id);
+
         if (!$order) {
             return;
         }
 
         foreach ($order->get_items() as $item) {
-            WC()->cart->add_to_cart($item->get_product_id(), $item->get_quantity());
+            $product_id = $item->get_product_id();
+            $quantity = $item->get_quantity();
+            $product = wc_get_product($product_id);
+
+            // Check if product exists and is purchasable
+            if ($product && $product->is_purchasable() && $product->is_in_stock()) {
+                WC()->cart->add_to_cart($product_id, $quantity);
+            }
         }
 
         wp_safe_redirect(wc_get_cart_url());
         exit;
     }
+
 }
