@@ -32,11 +32,10 @@ class SRO_Repeat_Order
         }
 
         $order_id = absint($_GET['sro_repeat_order']);
-        $nonce = $_GET['sro_nonce'];
+        $nonce = isset($_GET['sro_nonce']) ? sanitize_text_field(wp_unslash($_GET['sro_nonce'])) : '';
 
-        // Verify nonce
         if (!wp_verify_nonce($nonce, 'sro_repeat_order_' . $order_id)) {
-            return; // Invalid request
+            return;
         }
 
         $order = wc_get_order($order_id);
@@ -57,5 +56,6 @@ class SRO_Repeat_Order
         wp_safe_redirect(wc_get_cart_url());
         exit;
     }
+
 
 }
