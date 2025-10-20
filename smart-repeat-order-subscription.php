@@ -2,12 +2,12 @@
 /**
  *
  * Plugin Name: Smart Repeat Order for WooCommerce
- * Plugin URI: https://example.com/smart-repeat-order
+ * Plugin URI: https://abfahad.me/smart-repeat-order-subscription
  * Description: Smart Repeat Order is a simple WooCommerce extension that allows customers to easily schedule repeat orders for their favorite products. Customers can set up their orders to repeat on a weekly, bi-weekly, or monthly basis, making it easier for them to reorder frequently purchased items. Admins can also manage repeat orders and send email reminders.
  * Version: 1.0
  * Author: Your Name
- * Author URI: https://example.com
- * Text Domain: smart-repeat-order
+ * Author URI: https://abfahad.me
+ * Text Domain: smart-repeat-order-subscription
  * Domain Path: /languages
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html

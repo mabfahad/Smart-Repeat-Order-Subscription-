@@ -15,7 +15,7 @@ class SRO_Repeat_Order
             'url' => add_query_arg([
                 'sro_repeat_order' => $order->get_id()
             ]),
-            'name' => __('Repeat Order', 'smart-repeat-order')
+            'name' => __('Repeat Order', 'smart-repeat-order-subscription'),
         ];
         return $actions;
     }
