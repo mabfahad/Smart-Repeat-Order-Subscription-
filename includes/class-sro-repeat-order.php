@@ -6,7 +6,7 @@ class SRO_Repeat_Order
     public function __construct()
     {
         add_filter('woocommerce_my_account_my_orders_actions', [$this, 'add_repeat_order_button'], 10, 2);
-        add_action('init', [$this, 'handle_repeat_order']);
+        add_action('template_redirect', [$this, 'handle_repeat_order']); // safe hook
     }
 
     public function add_repeat_order_button($actions, $order)
@@ -24,7 +24,6 @@ class SRO_Repeat_Order
         return $actions;
     }
 
-
     public function handle_repeat_order()
     {
         if (!isset($_GET['sro_repeat_order'], $_GET['sro_nonce'])) {
@@ -32,7 +31,7 @@ class SRO_Repeat_Order
         }
 
         $order_id = absint($_GET['sro_repeat_order']);
-        $nonce = isset($_GET['sro_nonce']) ? sanitize_text_field(wp_unslash($_GET['sro_nonce'])) : '';
+        $nonce = sanitize_text_field(wp_unslash($_GET['sro_nonce']));
 
         if (!wp_verify_nonce($nonce, 'sro_repeat_order_' . $order_id)) {
             return;
@@ -56,6 +55,5 @@ class SRO_Repeat_Order
         wp_safe_redirect(wc_get_cart_url());
         exit;
     }
-
-
 }
+
