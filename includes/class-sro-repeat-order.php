@@ -11,24 +11,35 @@ class SRO_Repeat_Order
 
     public function add_repeat_order_button($actions, $order)
     {
+        $nonce = wp_create_nonce('sro_repeat_order_' . $order->get_id());
+
         $actions['repeat_order'] = [
             'url' => add_query_arg([
-                'sro_repeat_order' => $order->get_id()
+                'sro_repeat_order' => $order->get_id(),
+                'sro_nonce' => $nonce,
             ]),
             'name' => __('Repeat Order', 'smart-repeat-order-subscription'),
         ];
+
         return $actions;
     }
 
+
     public function handle_repeat_order()
     {
-        if (!isset($_GET['sro_repeat_order'])) {
+        if (!isset($_GET['sro_repeat_order'], $_GET['sro_nonce'])) {
             return;
         }
 
         $order_id = absint($_GET['sro_repeat_order']);
-        $order = wc_get_order($order_id);
+        $nonce = $_GET['sro_nonce'];
 
+        // Verify nonce
+        if (!wp_verify_nonce($nonce, 'sro_repeat_order_' . $order_id)) {
+            return; // Invalid request
+        }
+
+        $order = wc_get_order($order_id);
         if (!$order) {
             return;
         }
@@ -38,7 +49,6 @@ class SRO_Repeat_Order
             $quantity = $item->get_quantity();
             $product = wc_get_product($product_id);
 
-            // Check if product exists and is purchasable
             if ($product && $product->is_purchasable() && $product->is_in_stock()) {
                 WC()->cart->add_to_cart($product_id, $quantity);
             }
